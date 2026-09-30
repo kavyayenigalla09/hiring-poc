@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TTB Label Compliance Assistant — Prototype
 
-## Getting Started
+A standalone proof-of-concept for assisting TTB label compliance agents with fast, explainable field matching and batch review.
 
-First, run the development server:
+## Stack
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Lucide React
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prototype approach
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The current version intentionally avoids external ML/API dependencies so it can run in restricted government-network environments. The review engine is represented with deterministic sample extraction/results and focuses on the agent workflow:
 
-## Learn More
+1. Capture application values.
+2. Attach label artwork.
+3. Compare normalized fields.
+4. Flag mismatches and warning-format issues.
+5. Present evidence to the agent.
+6. Allow the agent to accept or mark an issue.
+7. Surface batch progress and prioritize flagged applications.
 
-To learn more about Next.js, take a look at the following resources:
+## Assumptions / trade-offs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- This is a UX/engineering prototype, not a production compliance determination system.
+- No COLA integration, authentication, PII storage, cloud OCR, or production persistence is included.
+- Real OCR/computer vision can replace the deterministic sample extraction layer later.
+- Final compliance decisions remain with a human agent.
+- The sample warning and label content is illustrative. Production rules should be mapped to the applicable TTB regulations and beverage-specific requirements.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Key design decisions
 
-## Deploy on Vercel
+- Single primary action per screen.
+- Plain-language explanations for every flag.
+- Normalized comparison allows harmless case/punctuation differences while preserving original text for review.
+- Exact warning checks are treated more strictly than ordinary brand-name matching.
+- Batch review jumps agents to exceptions rather than requiring one-by-one inspection.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## TTB reference sources used by the prototype
+
+The compliance checks are intentionally limited to a small prototype rule set. They are informed by current TTB guidance for distilled spirits: mandatory brand/class-type/alcohol content, alcohol-content formatting, net contents, and the government health warning. The prototype is not a legal-compliance engine and all results require agent review.
+
+- https://www.ttb.gov/regulated-commodities/beverage-alcohol/distilled-spirits/ds-labeling-home/ds-brand-label
+- https://www.ttb.gov/regulated-commodities/beverage-alcohol/distilled-spirits/ds-labeling-home/ds-alcohol-content
+- https://www.ttb.gov/regulated-commodities/beverage-alcohol/distilled-spirits/ds-labeling-home/ds-net-contents
+- https://www.ttb.gov/regulated-commodities/beverage-alcohol/distilled-spirits/ds-labeling-home/ds-health-warning
